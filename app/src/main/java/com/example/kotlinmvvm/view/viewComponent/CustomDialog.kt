@@ -1,34 +1,35 @@
 package com.example.kotlinmvvm.view.viewComponent
 
-import android.app.Activity
-import android.app.Dialog
-import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
-import android.widget.TextView
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.DataBindingUtil.*
-import com.example.kotlinmvvm.R
+import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import com.example.kotlinmvvm.databinding.DialogPlainBinding
 
-class CustomDialog(context: Context, private val title: String, private val body: String) : Dialog(context) {
+class CustomDialog(_title: String, _body: String) : DialogFragment() {
     private lateinit var binding: DialogPlainBinding
+    private val title = _title
+    private val body = _body
 
-    override fun onCreate(savedInstanceState: Bundle) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DialogPlainBinding.inflate(inflater, container, false)
 
-        binding = setContentView(context as Activity, R.layout.dialog_plain)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val lp = WindowManager.LayoutParams()
-        lp.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND
-        lp.dimAmount = 0.8f
-        window!!.attributes = lp
+        binding.title = title
+        binding.body = body
 
-        binding.textViewPlainTitle.text = title
-        binding.textViewPlainBody.text = body
         binding.buttonPlainConfirm.setOnClickListener {
-            this.dismiss()
+            dismiss()
         }
+
+        return binding.root
     }
 }

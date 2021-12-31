@@ -6,6 +6,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/buttonInternet"
+            android:layout_weight="1"
+            android:text="call from internet"/>
+
         <EditText
             android:id="@+id/editText"
             android:layout_width="match_parent"
@@ -19,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="button" />
+            android:text="save" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
