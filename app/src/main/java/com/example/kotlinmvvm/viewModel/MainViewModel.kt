@@ -8,7 +8,7 @@ import com.example.kotlinmvvm.model.Note
 import com.example.kotlinmvvm.view.viewComponent.NoteAdapter
 
 class MainViewModel : ViewModel() {
-    private val list: MutableLiveData<List<Note>> = MutableLiveData<List<Note>>()
+    private val list: MutableLiveData<MutableList<Note>> = MutableLiveData<MutableList<Note>>()
     private val _list = mutableListOf<Note>()
 
     init {
@@ -20,16 +20,12 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun getList(): LiveData<List<Note>> {
+    fun getList(): LiveData<MutableList<Note>> {
         return list
     }
 
     fun addItem(title: String, body: String) {
         _list.add(Note(title, body))
         list.postValue(_list)
-    }
-
-    fun getNoteAdapter(): NoteAdapter? {
-        return noteAdapter
     }
 }

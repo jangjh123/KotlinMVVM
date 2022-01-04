@@ -1,41 +1,44 @@
 package com.example.kotlinmvvm.view.viewComponent
 
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kotlinmvvm.R
+import com.example.kotlinmvvm.databinding.NoteItemBinding
 import com.example.kotlinmvvm.model.Note
 
-class NoteAdapter(arr: List<Note>) :
-    RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
-    private val mArr = arr
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): NoteAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.note_item, parent, false)
-        return ViewHolder(view)
+class NoteAdapter : ListAdapter<Note, RecyclerView.ViewHolder>(CustomDiffUtil()) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return ViewHolder(
+            NoteItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
-    override fun onBindViewHolder(holder: NoteAdapter.ViewHolder, position: Int) {
-        holder.mTextViewTitle.text = mArr[position].title
-        holder.mTextViewBody.text = mArr[position].body
-    }
-
-    override fun getItemCount(): Int {
-        return if (mArr.isEmpty()) {
-            0
-        } else {
-            mArr.size
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is ViewHolder) {
+            val note = getItem(position) as Note
+            holder.bind(note)
         }
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val mTextViewTitle: TextView = view.findViewById(R.id.textViewTitle)
-        val mTextViewBody: TextView = view.findViewById(R.id.textViewBody)
+    fun submit(list: List<Note>) {
+        submitList(list.toMutableList())
 
+        // 참조값 비교
+    }
+
+    inner class ViewHolder(private val binding: NoteItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(note: Note) {
+            with (binding) {
+                textViewTitle.text = note.title
+                textViewBody.text = note.body
+            }
+        }
     }
 }
